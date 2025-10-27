@@ -4,8 +4,7 @@
 --*/
 
 use role accountadmin;
-
--- ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
+ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
 USE WAREHOUSE call_center_analytics_wh;
 
