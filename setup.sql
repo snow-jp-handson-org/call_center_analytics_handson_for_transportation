@@ -105,7 +105,7 @@ GRANT USAGE ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE PUBLIC;
 -- GRANT CREATE AGENT ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE call_center_analytics_role;
 
 
-use role call_center_analytics_role;
+-- use role call_center_analytics_role;
 -- エージェントのマスタの作成
 -- SalesAgents テーブルを作成
 CREATE TABLE CALL_CENTER_ANALYTICS_DB.ANALYTICS.SUPPORT_AGENTS (
