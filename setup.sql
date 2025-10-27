@@ -4,6 +4,7 @@
 --*/
 
 use role accountadmin;
+
 -- ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
 USE WAREHOUSE call_center_analytics_wh;
@@ -56,4 +57,3 @@ SELECT '2.', 'Upload and run call_center_analytics.ipynb notebook'
 UNION ALL
 SELECT '3.', 'Upload and run cortex_analyst_setup.ipynb notebook'
 ;
-
