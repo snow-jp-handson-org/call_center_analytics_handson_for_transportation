@@ -3,20 +3,22 @@
 このスクリプトは、コールセンター分析ソリューションに必要なすべてのオブジェクトを作成します。
 --*/
 
-USE ROLE accountadmin;
+-- use role accountadmin;
+-- ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
+USE ROLE securityadmin;
 
 -- Create custom role for call center analytics
 CREATE OR REPLACE ROLE call_center_analytics_role
     COMMENT = 'Role for call center analytics with AI_TRANSCRIBE and Cortex Agents';
 
--- Create warehouse for call center analytics
-CREATE OR REPLACE WAREHOUSE call_center_analytics_wh
-    WAREHOUSE_SIZE = 'medium'
-    WAREHOUSE_TYPE = 'standard'
-    AUTO_SUSPEND = 60
-    AUTO_RESUME = TRUE
-    INITIALLY_SUSPENDED = TRUE
-    COMMENT = 'Warehouse for call center analytics with Cortex LLM';
+-- -- Create warehouse for call center analytics
+-- CREATE OR REPLACE WAREHOUSE call_center_analytics_wh
+--     WAREHOUSE_SIZE = 'medium'
+--     WAREHOUSE_TYPE = 'standard'
+--     AUTO_SUSPEND = 60
+--     AUTO_RESUME = TRUE
+--     INITIALLY_SUSPENDED = TRUE
+--     COMMENT = 'Warehouse for call center analytics with Cortex LLM';
 
 -- Grant warehouse usage to custom role
 GRANT USAGE ON WAREHOUSE call_center_analytics_wh TO ROLE call_center_analytics_role;
@@ -27,9 +29,9 @@ USE WAREHOUSE call_center_analytics_wh;
 -- assign Query Tag to Session. This helps with performance monitoring and troubleshooting
 ALTER SESSION SET query_tag = '{"origin":"sf_sit-is","name":"call_center_analytics_2","version":{"major":1, "minor":0},"attributes":{"is_quickstart":1, "source":"sql"}}';
 
--- Create database and schemas
-CREATE DATABASE IF NOT EXISTS call_center_analytics_db;
-CREATE OR REPLACE SCHEMA call_center_analytics_db.analytics;
+-- -- Create database and schemas
+-- CREATE DATABASE IF NOT EXISTS call_center_analytics_db;
+-- CREATE SCHEMA IF NOT EXISTS call_center_analytics_db.analytics;
 
 -- Grant database and schema access to custom role
 GRANT USAGE ON DATABASE call_center_analytics_db TO ROLE call_center_analytics_role;
@@ -58,10 +60,10 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE call_center_analytics_role;
 GRANT ROLE call_center_analytics_role TO ROLE sysadmin;
 
 -- Create stages for data and audio files
-CREATE OR REPLACE STAGE call_center_analytics_db.analytics.audio_files_ja
-    DIRECTORY = (ENABLE = TRUE)
-    ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE')
-    COMMENT = 'Stage for call center audio files';
+-- CREATE OR REPLACE STAGE call_center_analytics_db.analytics.audio_files_ja
+--     DIRECTORY = (ENABLE = TRUE)
+--     ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE')
+--     COMMENT = 'Stage for call center audio files';
 
 -- Grant stage access to custom role
 GRANT READ ON STAGE call_center_analytics_db.analytics.audio_files_ja TO ROLE call_center_analytics_role;
@@ -103,6 +105,7 @@ GRANT USAGE ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE PUBLIC;
 GRANT CREATE AGENT ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE call_center_analytics_role;
 
 
+use role call_center_analytics_role;
 -- エージェントのマスタの作成
 -- SalesAgents テーブルを作成
 CREATE TABLE CALL_CENTER_ANALYTICS_DB.ANALYTICS.SUPPORT_AGENTS (
@@ -147,4 +150,3 @@ SELECT '3.', 'Upload and run cortex_analyst_setup.ipynb notebook'
 ;
 
 
-ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
